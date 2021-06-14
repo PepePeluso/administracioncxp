@@ -27,41 +27,13 @@ const CabeceraTable = () => {
         getCabecera()
     }, [])
 
-    const dataTable = () => {
-        if (dataCabecera.map) {
-            dataCabecera.map((pago, index) => {
-                return (
-                    <tr key={index}>
-                        <td>{pago.idcabecera}</td>
-                        <td>{pago.descripcionpago}</td>
-                        <td>{pago.prov_dni}</td>
-                        <td>{pago.idfuente}</td>
-                        <td>{cambiarformatoFecha(pago.fechapago)}</td>
-                        <td>
-                            <Link to={{ pathname: "/cabecera/edit", cabecera: pago }}>
-                                <button className="btn btn-primary" ><FontAwesomeIcon icon={faEdit} /></button>
-                            </Link>
-                            {"   "}
-                            <button className="btn btn-danger" onClick={(e) => deleteCabecera(e.currentTarget)} value={pago.idcabecera} ><FontAwesomeIcon icon={faTrashAlt} /></button>
-                            {"   "}
-                            <Link to={{ pathname: "/cabecera/detalle", idcabecera: pago.idcabecera }}>
-                                <button className="btn btn-warning"><FontAwesomeIcon icon={faBars}
-                                /></button>
-                            </Link>
-                        </td>
-                    </tr>
-                )
-            })
-        }
-    }
-
     const deleteCabecera = async (e) => {
         const confirmEliminar = await swal({
             text: "¿Está seguro de eliminar este Pago?",
             icon: "warning",
             buttons: {
-                cancel: {text: "No", value: false, visible: true},
-                confirm: {text: "Si", value: true}
+                cancel: { text: "No", value: false, visible: true },
+                confirm: { text: "Si", value: true }
             }
         })
         if (confirmEliminar) {
@@ -78,7 +50,7 @@ const CabeceraTable = () => {
                     icon: "success"
                 })
                 history.go(0)
-            } 
+            }
         }
     }
 
@@ -102,7 +74,31 @@ const CabeceraTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        {dataTable()}
+                        { !(dataCabecera===undefined) &&
+                            dataCabecera.map((pago, index) => {
+                                return (
+                                    <tr key={index}>
+                                        <td>{pago.idcabecera}</td>
+                                        <td>{pago.descripcionpago}</td>
+                                        <td>{pago.prov_dni}</td>
+                                        <td>{pago.idfuente}</td>
+                                        <td>{cambiarformatoFecha(pago.fechapago)}</td>
+                                        <td>
+                                            <Link to={{ pathname: "/cabecera/edit", cabecera: pago }}>
+                                                <button className="btn btn-primary" ><FontAwesomeIcon icon={faEdit} /></button>
+                                            </Link>
+                                            {"   "}
+                                            <button className="btn btn-danger" onClick={(e) => deleteCabecera(e.currentTarget)} value={pago.idcabecera} ><FontAwesomeIcon icon={faTrashAlt} /></button>
+                                            {"   "}
+                                            <Link to={{ pathname: "/cabecera/detalle", idcabecera: pago.idcabecera }}>
+                                                <button className="btn btn-warning"><FontAwesomeIcon icon={faBars}
+                                                /></button>
+                                            </Link>
+                                        </td>
+                                    </tr>
+                                )
+                            })
+                        }
                     </tbody>
                 </table>
             </div>
