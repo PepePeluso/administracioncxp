@@ -24,26 +24,28 @@ const CabeceraCreate = () => {
 
     const postCabecera = async () => {
         const stringifyCabecera = stringify(cabeceraForm)
-        const post = await axios.post(url+"?"+stringifyCabecera)
         if (cabeceraForm.prov_dni === "Select a DNI..."){
             swal({
                 title: "Error",
                 text: "No se ha seleccionado un Proveedor DNI",
                 icon: "error"
             })
-        } else if (post.data.code) {
-            swal({
-                title: "Error",
-                text: post.data.message,
-                icon: "error"
-            })
         } else {
-            swal({
-                text: "Cabecera creada con éxito",
-                icon: "success"
-            })
-            history.push("/cabecera")
-        } 
+            const post = await axios.post(url+"?"+stringifyCabecera)
+            if (post.data.code) {
+                swal({
+                    title: "Error",
+                    text: post.data.message,
+                    icon: "error"
+                })
+            } else {
+                swal({
+                    text: "Cabecera creada con éxito",
+                    icon: "success"
+                })
+                history.push("/cabecera")
+            } 
+        }
     }
 
     useEffect(() => {
