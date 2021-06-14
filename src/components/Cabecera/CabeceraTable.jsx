@@ -52,8 +52,6 @@ const CabeceraTable = () => {
                     </tr>
                 )
             })
-        } else {
-            <h4>No hay datos</h4>
         }
     }
 
@@ -104,7 +102,7 @@ const CabeceraTable = () => {
                         </tr>
                     </thead>
                     <tbody>
-                        { }
+                        {dataTable()}
                     </tbody>
                 </table>
             </div>
