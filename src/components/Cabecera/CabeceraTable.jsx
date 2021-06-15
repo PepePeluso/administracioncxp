@@ -46,7 +46,7 @@ const CabeceraTable = () => {
                 })
             } else {
                 await swal({
-                    text: "Cabecera actualizada con éxito",
+                    text: "Cabecera eliminada con éxito",
                     icon: "success"
                 })
                 history.go(0)

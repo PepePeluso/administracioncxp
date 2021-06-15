@@ -1,28 +1,36 @@
-import React, {Fragment} from "react"
+import React, { Fragment } from "react"
 import { Link } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faTable, faFileAlt } from "@fortawesome/free-solid-svg-icons"
+import { faTable, faFileAlt, faMoneyBill } from "@fortawesome/free-solid-svg-icons"
 
 export const Navbar = () => {
-    return(
+    return (
         <Fragment>
-            <nav className="navbar sticky-top navbar-expand-sm navbar-dark bg-dark">
+            <nav className="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
                 <div className="container-fluid">
-                    <div className="col">
-                        <Link to="/" className="aND">
-                            <h1>Módulo de Cuentas por Pagar</h1>
-                        </Link>
-                    </div>
-                    <div className="col-2 align-self-end">
-                        <Link to="/cabecera" className="aND">
-                            <p><FontAwesomeIcon icon={faTable} /> CRUD Cabecera</p>
-                        </Link>
-                    </div>
-                    <div className="col-1 align-self-end">
-                        <Link to="/reportes" className="aND">
-                            <p><FontAwesomeIcon icon={faFileAlt} /> Reportes</p>
-                        </Link>
-                    </div>
+                    <Link to="/" className="navbar-brand aND">
+                        <h1>Módulo de Cuentas por Pagar</h1>
+                    </Link>
+                    <ul className="navbar-nav d-flex">
+                        <li className="nav-item centro mx-3 nav-base">
+                            <Link to="/cabecera" className="aND">
+                                <FontAwesomeIcon icon={faTable} />
+                                <p>CRUD Cabecera</p>
+                            </Link>
+                        </li>
+                        <li className="nav-item centro mx-3 nav-base">
+                            <Link to="/reportes" className="aND">
+                                <FontAwesomeIcon icon={faFileAlt} />
+                                <p>Reportes</p>
+                            </Link>
+                        </li>
+                        <li className="nav-item centro mx-3 nav-base">
+                            <Link to="/fuentepago" className="aND">
+                                <FontAwesomeIcon icon={faMoneyBill} />
+                                <p>Fuentes de Pago</p>
+                            </Link>
+                        </li>
+                    </ul>
                 </div>
             </nav>
         </Fragment>

@@ -25,3 +25,11 @@ code {
 .centro {
   text-align: center;
 }
+
+.overflow-y {
+  overflow-y: visible;
+}
+
+.nav-base {
+  transform: translateY(15%);
+}

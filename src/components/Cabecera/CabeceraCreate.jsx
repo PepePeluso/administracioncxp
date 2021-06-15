@@ -12,7 +12,7 @@ const CabeceraCreate = () => {
     const history = useHistory()
 
     const [proveedores, setProveedores] = useState(["w","s"])
-    const [fuente, setFuente] = useState([0])
+    const [fuente, setFuente] = useState([])
     const [cuentaBancariaRO, setCuentabancariaRO] = useState("No se ha seleccionado una fuente de pago.")
 
     const hoy = new Date()
@@ -30,7 +30,13 @@ const CabeceraCreate = () => {
         if (cabeceraForm.prov_dni === "Select a DNI..."){
             swal({
                 title: "Error",
-                text: "No se ha seleccionado un Proveedor DNI",
+                text: "No se ha seleccionado un Proveedor DNI.",
+                icon: "error"
+            })
+        } else if (descripcionpago === "") {
+            swal({
+                title: "Error",
+                text: "No se ha llenado la descripción del pago.",
                 icon: "error"
             })
         } else {
@@ -56,7 +62,9 @@ const CabeceraCreate = () => {
             const consulta = await axios.get(urlProv)
             if (consulta.data.code === 0){}
             else {
-                setProveedores(consulta.data || ["w","s"])
+                let hash = {};
+                let provFilter = await consulta.data.filter(o => hash[o.pro_dni] ? false : hash[o.pro_dni] = true);
+                setProveedores(provFilter || ["w","s"])
             }
         }
         getProveedores()
@@ -75,7 +83,13 @@ const CabeceraCreate = () => {
 
     const cuentaBancaria = (val) => {
         try {
-            setCuentabancariaRO(fuente[val-1].cuentabancaria)
+            if (fuente.length > 0){
+                const tp = fuente.find(tpNum => {
+                    // eslint-disable-next-line eqeqeq
+                    return tpNum.idfuente == val
+                })
+                setCuentabancariaRO(tp.cuentabancaria)
+            }
         } catch (error) {
             setCuentabancariaRO("No se ha seleccionado una fuente de pago.")
         }

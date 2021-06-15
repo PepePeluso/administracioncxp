@@ -39,7 +39,9 @@ const CabeceraEdit = () => {
             const consulta = await axios.get(urlProv)
             if (consulta.data.code === 0){}
             else {
-                setProveedores(consulta.data || ["w","s"])
+                let hash = {};
+                let provFilter = await consulta.data.filter(o => hash[o.pro_dni] ? false : hash[o.pro_dni] = true);
+                setProveedores(provFilter || ["w","s"])
             }
         }
         getProveedores()
@@ -58,7 +60,13 @@ const CabeceraEdit = () => {
 
     const cuentaBancaria = (val) => {
         try {
-            setCuentabancariaRO(fuente[val-1].cuentabancaria)
+            if (fuente.length > 0){
+                const tp = fuente.find(tpNum => {
+                    // eslint-disable-next-line eqeqeq
+                    return tpNum.idfuente == val
+                })
+                setCuentabancariaRO(tp.cuentabancaria)
+            }
         } catch (error) {
             setCuentabancariaRO("No se ha seleccionado una fuente de pago.")
         }
@@ -66,20 +74,28 @@ const CabeceraEdit = () => {
 
     const putCabecera = async () => {
         const stringifyCabecera = stringify(cabeceraForm)
-        const post = await axios.put(url+"?"+stringifyCabecera)
-        if (post.data.code) {
+        if (descripcionpago === "") {
             swal({
                 title: "Error",
-                text: post.data.message,
+                text: "No se ha llenado la descripción del pago.",
                 icon: "error"
             })
         } else {
-            swal({
-                text: "Cabecera actualizada con éxito",
-                icon: "success"
-            })
-            history.push("/cabecera")
-        } 
+            const post = await axios.put(url + "?" + stringifyCabecera)
+            if (post.data.code) {
+                swal({
+                    title: "Error",
+                    text: post.data.message,
+                    icon: "error"
+                })
+            } else {
+                swal({
+                    text: "Cabecera actualizada con éxito",
+                    icon: "success"
+                })
+                history.push("/cabecera")
+            }
+        }
     }
 
     return (
