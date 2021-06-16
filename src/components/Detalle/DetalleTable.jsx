@@ -26,57 +26,67 @@ const DetalleTable = () => {
             setDataCabecera(consulta.data)
         }
         getCabeceraDetalle()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
         const getDetalle = async () => {
             const consulta = await axios.get(urlDet)
-            if ((consulta.data.code === 0) || consulta.data === undefined){}
+            if ((consulta.data.code === 0) || consulta.data === undefined) { }
             else {
                 setDataDetalle(consulta.data)
             }
         }
         getDetalle()
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     useEffect(() => {
-        if (dataDetalle === undefined){
+        if (dataDetalle === undefined) {
             setDataDetalle([])
         }
     }, [dataDetalle])
 
-    /* const deleteCabecera = async (e) => {
-        const confirmEliminar = await swal({
-            text: "¿Está seguro de eliminar este Detalle?",
-            icon: "warning",
-            buttons: {
-                cancel: { text: "No", value: false, visible: true },
-                confirm: { text: "Si", value: true }
-            }
+    const cols1 = [
+        { field: 'idcabecera', header: 'Id Cabecera' },
+        { field: 'id_detalle', header: 'Id Detalle' },
+        { field: 'id_factura', header: 'Id Factura' },
+        { field: 'valorapagar', header: 'ValorAPagar' },
+        { field: 'abono', header: 'Abono' },
+        { field: 'saldo', header: 'Saldo' },
+
+    ];
+    const exportColumns1 = cols1.map(col => ({ title: col.header, dataKey: col.field }));
+
+    const exportPdf = () => {
+        var date = new Date();
+        import('jspdf').then(jsPDF => {
+            import('jspdf-autotable').then(() => {
+                const doc = new jsPDF.default(0, 0);
+                doc.setFont('Helvetica', 'bold')
+                doc.text(5, 8, 'Factura:\t' + dataCabecera.idcabecera)
+                doc.setFontSize(10)
+                doc.setFont('Helvetica', 'normal')
+                doc.text(5, 15, 'Descripcion:\t       ' + dataCabecera.descripcionpago)
+                doc.text(5, 20, 'DNI: \t \t \t' + dataCabecera.prov_dni)
+                doc.text(5, 25, 'Fecha de pago: \t ' + dataCabecera.fechapago)
+                doc.text(5, 30, 'Fecha de emision:     ' + date.toLocaleDateString())
+                // colocar la tabla para los detalles
+                doc.autoTable(exportColumns1, dataDetalle,
+                    { margin: { top: 50 } });
+                doc.save('reportFP.pdf');
+            })
         })
-        if (confirmEliminar) {
-            const del = await axios.delete(url + "?idcabecera=" + e.value)
-            if (del.data.code) {
-                swal({
-                    title: "Error",
-                    text: del.data.message,
-                    icon: "error"
-                })
-            } else {
-                await swal({
-                    text: "Cabecera eliminada con éxito",
-                    icon: "success"
-                })
-                history.go(0)
-            }
-        }
-    } */
+    }
 
     return (<Fragment>
         <div className="container-fluid">
-            <h3>Cabecera</h3>
+            <div className="row">
+                <div className="col"><h3>Cabecera</h3></div>
+                <div className="align-self-center derecha me-1">
+                    <div className="btn btn-outline-info" onClick={exportPdf} >Imprimir Factura</div>
+                </div>
+            </div>
             <div className="card mb-2">
                 <div className="card-body">
                     <div className="input-group mb-2">
@@ -118,11 +128,10 @@ const DetalleTable = () => {
                         <th>Valor a Pagar</th>
                         <th>Abono</th>
                         <th>Saldo</th>
-                        <th>Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
-                    {dataDetalle.map((detalle,index) => {
+                    {dataDetalle.map((detalle, index) => {
                         return (
                             <tr key={index}>
                                 <td>{detalle.id_detalle}</td>
@@ -131,11 +140,6 @@ const DetalleTable = () => {
                                 <td>{detalle.valorapagar}</td>
                                 <td>{detalle.abono}</td>
                                 <td>{detalle.saldo}</td>
-                                <td>
-                                    <button className="btn btn-primary" ><FontAwesomeIcon icon={faEdit} /></button>
-                                    {"   "}
-                                    <button className="btn btn-danger" ><FontAwesomeIcon icon={faTrashAlt} /></button>
-                                </td>
                             </tr>
                         )
                     })}
