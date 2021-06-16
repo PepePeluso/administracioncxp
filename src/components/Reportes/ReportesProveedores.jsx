@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from "axios";
 import Logo2 from '../../images/provvedores.png';
 import { ExportToCsv } from "export-to-csv"
@@ -8,10 +8,26 @@ import swal from 'sweetalert';
 
 const ReportesProveedores = () => {
     const urlCabecera = "https://apirestcxp.herokuapp.com/cxp/";
+    const urlPersonas = "https://apirestcxp.herokuapp.com/cxp/cabecera"
 
     const [dni, setDni] = useState("")
 
     const [dataCabecera, setDataCabecera] = useState([]);
+    const [cedulas, setCedulas] = useState([])
+
+    useEffect(() => {
+        const getCedulas = async () => {
+            const consulta = await axios.get(urlPersonas)
+            console.log(consulta.data)
+            if (consulta.data.code === 0){}
+            else {
+                let hash = {};
+                let provFilter = await consulta.data.filter(o => hash[o.prov_dni] ? false : hash[o.prov_dni] = true);
+                setCedulas(provFilter || ["w","s"])
+            }
+        }
+        getCedulas()
+    }, [])
 
     const configCSV = {
         fieldSeparator: ',',
@@ -129,8 +145,15 @@ const ReportesProveedores = () => {
                         ><FontAwesomeIcon icon={faSearch} /></span>
                     </div>
                     <div className="col-3">
-                        <input type="text" className="form-control" value={dni}
-                            onChange={(e) => setDni(e.target.value)} required />
+                        <select className="form-select" value={dni}
+                            onChange={(e) => setDni(e.target.value)} >
+                            <option>Select a DNI...</option>
+                            {cedulas.map((prov, index) => {
+                                return (
+                                    <option key={index}>{prov.prov_dni}</option>
+                                )
+                            })}
+                        </select>
                     </div>
                     <div className="col d-flex">
                         {csvPDF}
