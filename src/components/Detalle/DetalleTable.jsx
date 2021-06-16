@@ -3,7 +3,7 @@ import axios from "axios"
 import { Link, useLocation, /*useHistory*/ } from "react-router-dom"
 //import swal from "sweetalert"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEdit, faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
+import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
 const DetalleTable = () => {
     const { idcabecera } = useLocation()
