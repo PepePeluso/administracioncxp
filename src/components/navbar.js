@@ -19,15 +19,15 @@ export const Navbar = () => {
                             </Link>
                         </li>
                         <li className="nav-item centro mx-3 nav-base">
-                            <Link to="/reportes" className="aND">
-                                <FontAwesomeIcon icon={faFileAlt} />
-                                <p>Reportes</p>
-                            </Link>
-                        </li>
-                        <li className="nav-item centro mx-3 nav-base">
                             <Link to="/fuentepago" className="aND">
                                 <FontAwesomeIcon icon={faMoneyBill} />
                                 <p>Fuentes de Pago</p>
+                            </Link>
+                        </li>
+                        <li className="nav-item centro mx-3 nav-base">
+                            <Link to="/reportes" className="aND">
+                                <FontAwesomeIcon icon={faFileAlt} />
+                                <p>Reportes</p>
                             </Link>
                         </li>
                     </ul>

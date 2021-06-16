@@ -1,6 +1,7 @@
 import React, { useState, Fragment, useEffect } from "react"
 import axios from "axios"
-import { Link, useLocation } from "react-router-dom"
+import { Link, useLocation, /*useHistory*/ } from "react-router-dom"
+//import swal from "sweetalert"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faEdit, faTrashAlt, faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
@@ -11,6 +12,8 @@ const DetalleTable = () => {
 
     const [dataCabecera, setDataCabecera] = useState([])
     const [dataDetalle, setDataDetalle] = useState([])
+
+    //const history = useHistory()
 
     const cambiarformatoFecha = (date) => {
         var fecha = String(date)
@@ -44,6 +47,33 @@ const DetalleTable = () => {
         }
     }, [dataDetalle])
 
+    /* const deleteCabecera = async (e) => {
+        const confirmEliminar = await swal({
+            text: "¿Está seguro de eliminar este Detalle?",
+            icon: "warning",
+            buttons: {
+                cancel: { text: "No", value: false, visible: true },
+                confirm: { text: "Si", value: true }
+            }
+        })
+        if (confirmEliminar) {
+            const del = await axios.delete(url + "?idcabecera=" + e.value)
+            if (del.data.code) {
+                swal({
+                    title: "Error",
+                    text: del.data.message,
+                    icon: "error"
+                })
+            } else {
+                await swal({
+                    text: "Cabecera eliminada con éxito",
+                    icon: "success"
+                })
+                history.go(0)
+            }
+        }
+    } */
+
     return (<Fragment>
         <div className="container-fluid">
             <h3>Cabecera</h3>
@@ -74,7 +104,7 @@ const DetalleTable = () => {
             <div className="row">
                 <div className="col"><h3>Detalle</h3></div>
                 <div className="col align-self-center derecha me-1">
-                    <Link to={{ pathname: "/cabecera/detalle/create", idcabecera: dataCabecera.idcabecera }}>
+                    <Link to={{ pathname: "/cabecera/detalle/create", cabecera: dataCabecera }}>
                         <h4><FontAwesomeIcon icon={faPlusCircle} /></h4>
                     </Link>
                 </div>
