@@ -84,9 +84,11 @@ const CabeceraTable = () => {
                                         <td>{pago.idfuente}</td>
                                         <td>{cambiarformatoFecha(pago.fechapago)}</td>
                                         <td>
-                                            <Link to={{ pathname: "/cabecera/edit", cabecera: pago }}>
-                                                <button className="btn btn-primary" ><FontAwesomeIcon icon={faEdit} /></button>
-                                            </Link>
+                                            {!(pago.facturaprint) &&
+                                                <Link to={{ pathname: "/cabecera/edit", cabecera: pago }}>
+                                                    <button className="btn btn-primary" ><FontAwesomeIcon icon={faEdit} /></button>
+                                                </Link>
+                                            }
                                             {"   "}
                                             <button className="btn btn-danger" onClick={(e) => deleteCabecera(e.currentTarget)} value={pago.idcabecera} ><FontAwesomeIcon icon={faTrashAlt} /></button>
                                             {"   "}

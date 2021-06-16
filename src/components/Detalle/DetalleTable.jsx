@@ -1,7 +1,6 @@
 import React, { useState, Fragment, useEffect } from "react"
 import axios from "axios"
-import { Link, useLocation, /*useHistory*/ } from "react-router-dom"
-//import swal from "sweetalert"
+import { Link, useLocation, useHistory } from "react-router-dom"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faPlusCircle } from '@fortawesome/free-solid-svg-icons'
 
@@ -13,7 +12,7 @@ const DetalleTable = () => {
     const [dataCabecera, setDataCabecera] = useState([])
     const [dataDetalle, setDataDetalle] = useState([])
 
-    //const history = useHistory()
+    const history = useHistory()
 
     const cambiarformatoFecha = (date) => {
         var fecha = String(date)
@@ -58,7 +57,7 @@ const DetalleTable = () => {
     ];
     const exportColumns1 = cols1.map(col => ({ title: col.header, dataKey: col.field }));
 
-    const exportPdf = () => {
+    const exportPdf = async () => {
         var date = new Date();
         import('jspdf').then(jsPDF => {
             import('jspdf-autotable').then(() => {
@@ -77,6 +76,9 @@ const DetalleTable = () => {
                 doc.save('reportFP.pdf');
             })
         })
+        const print = await axios.put(url+"?facturaprint=true")
+        console.log(print.data)
+        history.push("/cabecera")
     }
 
     return (<Fragment>
@@ -114,9 +116,10 @@ const DetalleTable = () => {
             <div className="row">
                 <div className="col"><h3>Detalle</h3></div>
                 <div className="col align-self-center derecha me-1">
-                    <Link to={{ pathname: "/cabecera/detalle/create", cabecera: dataCabecera }}>
-                        <h4><FontAwesomeIcon icon={faPlusCircle} /></h4>
-                    </Link>
+                    {!(dataCabecera.facturaprint) &&
+                        <Link to={{ pathname: "/cabecera/detalle/create", cabecera: dataCabecera }}>
+                            <h4><FontAwesomeIcon icon={faPlusCircle} /></h4>
+                        </Link>}
                 </div>
             </div>
             <table className="table table-dark table-striped">
